@@ -1,0 +1,57 @@
+\ProvidesPackage{utils}
+\RequirePackage{amsmath}
+\RequirePackage{tabularx}
+\RequirePackage{xcolor}
+
+% Wrap contents, list-of-figures, list-of-tables in non-numbered pages
+\newcommand{\contents}[1]{
+  \pagenumbering{gobble}%
+	#1
+  \clearpage
+  \pagenumbering{arabic}%
+  \setcounter{page}{1}%
+}
+
+\newcommand{\quicktable}[4]{
+  \begin{table}[H]
+    \centering
+    \caption{#1}\label{tab:#2}
+    \begin{tabular}{#3}
+      #4
+    \end{tabular}
+  \end{table}
+}
+
+\newcommand{\quickfigure}[4]{
+  \begin{figure}[H]
+    \centering
+		\includegraphics[width=#3\textwidth]{figures/#4}
+    \caption{#1}\label{fig:#2}
+  \end{figure}
+}
+
+% Make sure documents aren't published with missing contents
+\newcommand{\todo}[1]{\begin{color}{Red}\textbf{TODO:} #1\end{color}}
+\newcommand{\note}[1]{\begin{color}{Orange}\textbf{NOTE:} #1\end{color}}
+\newcommand{\fixme}[1]{\begin{color}{Fuchsia}\textbf{FIXME:} #1\end{color}}
+\newcommand{\question}[1]{\begin{color}{ForestGreen}\textbf{QUESTION:} #1\end{color}}
+
+% helper to keep the 'd' in integrals non-italic
+\renewcommand{\d}[1]{\textrm{d}#1}
+
+% When multiple variables must be defined at once
+% LHS-> math mode, RHS -> Text mode
+% Optional parameter is the work "Where" introducing the block
+\newenvironment{definitions}[1][Where:]
+  {#1 \par\vspace{\abovedisplayskip}\noindent
+   \tabularx{\columnwidth}{>{$}l<{$} @{${}\colon{}$} >{\raggedright\arraybackslash}X}}
+  {\endtabularx\par\vspace{\belowdisplayskip}}
+% Example:
+% \begin{equation}
+% 	E = mc^2
+% \end{equation}
+% \begin{definitions}[Where:]
+%    E & Energy \\
+%    m & Mass of an object \\
+%    c & Speed of light \\
+%  \end{definitions}

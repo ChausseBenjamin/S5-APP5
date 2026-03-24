@@ -1,0 +1,125 @@
+name: Build and Release LaTeX Document
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0, v2.3.1
+  workflow_dispatch: # Allow manual triggers
+env:
+  LATEX_DIR: rapport
+  LATEX_MAIN: 00-main.tex
+  DOCKER_IMAGE: chaussebenjamin/tex-compiler
+permissions:
+  contents: write
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Get short commit SHA
+        id: vars
+        run: |
+          echo "short_sha=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_OUTPUT
+          echo "commit_sha=${GITHUB_SHA}" >> $GITHUB_OUTPUT
+      - name: Pull Docker image from DockerHub
+        run: |
+          echo "Pulling Docker image from DockerHub: ${{ env.DOCKER_IMAGE }}"
+          docker pull ${{ env.DOCKER_IMAGE }}
+          echo "Image info:"
+          docker inspect ${{ env.DOCKER_IMAGE }} | grep -E '"Architecture"|"Os"|"RepoTags"' | head -5
+      - name: Compile LaTeX document with Docker
+        run: |
+          echo "Compiling LaTeX document using Docker container..."
+          # First pass to generate .toc file
+          docker run --rm \
+            -v "${{ github.workspace }}:/tex" \
+            ${{ env.DOCKER_IMAGE }} \
+            ${{ env.LATEX_DIR }}/${{ env.LATEX_MAIN }} || true
+
+          # Second pass to include table of contents
+          docker run --rm \
+            -v "${{ github.workspace }}:/tex" \
+            ${{ env.DOCKER_IMAGE }} \
+            ${{ env.LATEX_DIR }}/${{ env.LATEX_MAIN }} || true
+
+          # Third pass for final table of contents consistency
+          docker run --rm \
+            -v "${{ github.workspace }}:/tex" \
+            ${{ env.DOCKER_IMAGE }} \
+            ${{ env.LATEX_DIR }}/${{ env.LATEX_MAIN }} || true
+      - name: Verify PDF was created
+        run: |
+          MAIN_FILE="${{ env.LATEX_MAIN }}"
+          PDF_FILE="${MAIN_FILE%.tex}.pdf"
+          if [ ! -f ${{ env.LATEX_DIR }}/$PDF_FILE ]; then
+            echo "Error: PDF was not generated at ${{ env.LATEX_DIR }}/$PDF_FILE"
+            echo "Directory contents:"
+            ls -la ${{ env.LATEX_DIR }}/
+            echo "Docker container logs (if any):"
+            docker logs $(docker ps -lq) || echo "No container logs available"
+            exit 1
+          else
+            echo "Success: PDF generated successfully"
+            ls -la ${{ env.LATEX_DIR }}/$PDF_FILE
+          fi
+      - name: Prepare release assets
+        id: assets
+        run: |
+          MAIN_FILE="${{ env.LATEX_MAIN }}"
+          PDF_FILE="${MAIN_FILE%.tex}.pdf"
+          SHORT_SHA="${{ steps.vars.outputs.short_sha }}"
+          BASE_NAME="${MAIN_FILE%.tex}"
+
+          # Create descriptive filenames with commit hash
+          cp ${{ env.LATEX_DIR }}/$PDF_FILE "${BASE_NAME}-${SHORT_SHA}.pdf"
+
+          # Create ZIP with PDF and license
+          mkdir -p release_content
+          cp ${{ env.LATEX_DIR }}/$PDF_FILE "release_content/${BASE_NAME}.pdf"
+          if [ -f LICENSE ]; then
+            cp LICENSE release_content/
+          fi
+          zip -r "${BASE_NAME}-${SHORT_SHA}.zip" release_content/
+
+          # Set outputs for later steps
+          echo "pdf_name=${BASE_NAME}-${SHORT_SHA}.pdf" >> $GITHUB_OUTPUT
+          echo "zip_name=${BASE_NAME}-${SHORT_SHA}.zip" >> $GITHUB_OUTPUT
+          echo "base_name=${BASE_NAME}" >> $GITHUB_OUTPUT
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always() # Upload even if build fails for debugging
+        with:
+          name: latex-build-artifacts
+          path: |
+            ${{ env.LATEX_DIR }}/*.log
+            ${{ env.LATEX_DIR }}/*.aux
+            ${{ env.LATEX_DIR }}/*.out
+            ${{ env.LATEX_DIR }}/*.toc
+          retention-days: 7
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: "Release v${{ github.run_number }} (commit ${{ steps.vars.outputs.short_sha }})"
+          body: |
+            Automated release of LaTeX document compiled from commit ${{ steps.vars.outputs.commit_sha }}.
+
+            **Files included:**
+            - `${{ steps.assets.outputs.pdf_name }}` - Standalone PDF document
+            - `${{ steps.assets.outputs.zip_name }}` - PDF with license file
+
+            **Commit:** ${{ github.event.head_commit.message }}
+            **Author:** ${{ github.event.head_commit.author.name }}
+          files: |
+            ${{ steps.assets.outputs.pdf_name }}
+            ${{ steps.assets.outputs.zip_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Summary
+        run: |
+          echo "LaTeX document compiled successfully!"
+          echo "PDF: ${{ steps.assets.outputs.pdf_name }}"
+          echo "ZIP: ${{ steps.assets.outputs.zip_name }}"
+          echo "Release: https://github.com/${{ github.repository }}/releases/tag/v${{ github.run_number }}"

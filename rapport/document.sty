@@ -1,0 +1,73 @@
+\ProvidesPackage{document}
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                                  Packages                                  %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+% Margin Setup according to University methodology:
+\RequirePackage[top=2.5cm,bottom=2.5cm,inner=3cm,outer=2.5cm]{geometry}
+% IEEE references & bibliography
+\RequirePackage[utf8]{inputenc} % Sensible text encoding
+\RequirePackage[style=ieee]{biblatex}
+\RequirePackage[T1]{fontenc}    % French compatibility
+\usepackage{csquotes}
+\RequirePackage[french]{babel}  % French document environment
+\RequirePackage{fancyhdr}       % Footer customisation
+\RequirePackage{booktabs}       % Elegant tables
+\RequirePackage{float}          % Accurate positionning of figures
+\usepackage{titlesec}           % Font sizes for sections/subsection
+\RequirePackage{amsmath}        % Mathematics environments
+\RequirePackage{amssymb}        % Mathematical symbols
+\RequirePackage{siunitx}        % SI Units
+\RequirePackage{setspace}       % Line spacing
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                               Headers/Footers                              %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+\renewcommand{\footrulewidth}{.5pt} % Line at the bottom
+\cfoot{\thepage}                    % Centered page number (footer)
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                                  Sections                                  %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+% Font size for section (16)
+\titleformat{\section}
+{\normalfont\fontsize{16}{19}\bfseries}{\thesection}{1em}{}
+% Font size for subsection (14)
+\titleformat{\subsection}
+{\normalfont\fontsize{14}{17}\bfseries}{\thesubsection}{1em}{}
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                               Equations/Math                               %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+% Number equation with section number (ex: First equation in section 3 is 3.1)
+\numberwithin{equation}{section}
+% Use french commas when writing numbers
+\sisetup{locale=FR}
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                                Line Spacing                                %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+% Set 1.5 linespacing for the document
+% \onehalfspacing
+
+
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+%                               Figures/Tables                               %
+%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~%
+
+% Count within sections (third table of section 5 would be Table 5.3)
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+% Separate section number from fig/table with a hyphen (5-3 instead of 5.3)
+\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+\renewcommand{\thetable}{\thesection-\arabic{table}}
+
