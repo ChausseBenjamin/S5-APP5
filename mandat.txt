@@ -1,0 +1,186 @@
+S5Info Guide Étudiant Hiver 2026
+
+GIF 591
+
+APP 5
+
+ÉNONCÉ DE LA PROBLÉMATIQUE
+Vous êtes embauchés chez ZeldUS, une entreprise en démarrage œuvrant dans le développement de jeux
+vidéo. Votre entreprise développe actuellement un jeu vidéo en ligne qui place la joueuse ou le joueur
+dans un monde fantastique. Étant donné qu’aucun autre employé de l’entreprise ne possède de
+connaissance en probabilités et statistiques, votre patron vous charge de 3 mandats portant sur ces
+aspects.
+
+Mandat no. 1 : Probabilités1
+Dans le jeu développé, le personnage a la possibilité d’acquérir différents pouvoirs. Une des façons
+d’acquérir ces pouvoirs consiste à jouer à un jeu de type ‘machine à sous’ où vous devez faire tourner un
+nombre donné de roues et obtenir certains symboles sur ces dernières. Vous étudiez trois différentes
+approches pour ce faire. Pour chacune de ces approches, vous devez déterminer la probabilité d’acquérir
+un pouvoir afin de vous assurer que cela ne sera pas trop difficile :
+i)
+
+ii)
+
+iii)
+
+Vous obtenez un pouvoir si chacune des roues s’arrête sur le même pictogramme, peu importe
+lequel. Vous vous demandez laquelle des configurations suivantes aurait la plus grande
+probabilité de réussite pour le personnage : 3 roues ayant chacune 8 pictogrammes ou 4 roues
+ayant chacune 5 pictogrammes? 2
+Pour les deux cas de i), vous obtenez un pouvoir si chacune des roues s’arrête sur un
+pictogramme différent, peu importe lequel. Vous vous demandez si vous devrez faire appel ici
+à des permutations ou à des combinaisons?
+Vous obtenez un pouvoir si vous réussissez à avoir le même pictogramme sur l’ensemble des
+roues au moins 2 fois3 sur un total de 5 essais. Quelle est la probabilité d’obtenir ce pouvoir
+pour les deux cas indiqués en i)? Vous avez une intuition que vous pourriez avoir recours à la
+fonction de distribution cumulative et la fonction de masse de la loi binomiale où la variable
+aléatoire X représenterait alors le nombre de fois où vous avez tourné le même pictogramme
+sur toutes les roues. Quelle est alors la moyenne, ou l’espérance statistique, de la variable
+aléatoire discrète X? Quelle est sa variance?
+
+Dans un autre aspect du jeu, le personnage principal peut ouvrir une porte s’il vise adéquatement
+une cible composée de plusieurs cercles concentriques, semblable à un jeu de fléchettes. Vous désirez
+déterminer la probabilité qu’il vise adéquatement cette cible. La fonction de densité de probabilité
+conjointe f(x, y) caractérisant la position (x, y) de la fléchette sur la cible suit une distribution normale
+bivariée. La moyenne est située au centre (µ𝑋 , µ𝑌 ) = (0, 0) de la cible qui possède un rayon r = 1 m.
+L’écart-type selon x (𝜎𝑋 ) est de 0,1 m et l’écart-type selon y (𝜎𝑌 ) est établi en fonction d’une variable
+
+1
+
+Vous pourrez compléter ce mandat après avoir effectué les procéduraux 1 et 2.
+Chacune des roues pour un cas donné sera composée du même nombre de pictogrammes.
+3
+Le pictogramme ‘gagnant’ peut être différent pour chacune de ces deux fois.
+2
+
+3
+
+S5Info Guide Étudiant Hiver 2026
+
+GIF 591
+
+APP 5
+
+aléatoire continue Z correspondant à la distance du personnage par rapport à la cible, il est de 𝜎𝑌 = 0,4 m
+s’il se trouve à z > 10 m et de 𝜎𝑌 = 0,05 m s’il se trouve à z < 1 m. La connaissance de Z vous permet donc
+de connaître la variance de Y. Le personnage ouvre la porte s’il frappe la cible à l’intérieur d’un cercle
+centré à (0, 0) et de rayon maximum de 0,1 m. Quelle est la corrélation entre X et Y ? Démontrer alors
+que X et Y sont indépendants. Quelle est alors la covariance entre X et Y? Écrivez la fonction de densité
+de probabilité f(x, y|z). Quelles sont les fonctions de densité de probabilité marginales de f(x, y|z) soient
+f(x|z) et f(y|z)? Quelles est la probabilité que le personnage ouvre la porte s’il se situe à moins d’un mètre
+et s’il se situe à plus de 10 m?4
+
+Mandat no. 2 : Statistiques descriptives et inférence statistique5
+Le modèle d’affaire de la compagnie dépend du temps de jeu de chaque joueur et la compagnie souhaite
+donc maximiser ce temps de jeu. Afin d’avoir un portrait clair de la situation, elle souhaite avoir des
+statistiques concernant le temps de jeu moyen d’un joueur à ce type de jeu. En considérant un autre jeu
+semblable déjà existant, votre patron estime qu’en moyenne chaque joueur joue au moins 5 heures (300
+minutes) par semaine. Vous êtes chargé de déterminer si c’est le cas. Pour ce faire, vous avez donc
+enregistré les temps de jeu de 100 joueurs que vous avez sauvegardés dans le fichier TempsDeJeu.txt.
+Ces temps sont indiqués en minutes.
+i)
+
+ii)
+
+Calculez d’abord les statistiques descriptives des temps de jeu, soit la moyenne
+échantillonnale, la médiane, le mode, l'écart type, la variance, le minimum, le maximum et
+l’étendue et présentez ces résultats dans cet ordre dans un tableau6. Utiliserez des estimateurs
+ponctuels sans biais pour déterminer la moyenne, la variance et l’écart-type.
+Construisez un histogramme de ces données. Pour ce faire, vous devrez premièrement remplir
+le tableau suivant, tout en précisant comment vous avez déterminé le nombre de classes7.
+Classes
+
+Limites
+
+Centres
+
+4
+
+Fréquences
+
+Fréquences
+relatives
+
+Fréquences
+cumulées
+
+Pour évaluer ces probabilités, vous pouvez simplifier le problème et considérer que chacune des bornes
+d’intégration est identique et va de -0,1 m à 0,1 m (que vous devez centrer et réduire). Vous obtiendrez alors une
+estimation des vraies probabilités.
+5
+Vous pourrez compléter ce mandat après avoir effectué les procéduraux 3 et 4.
+6
+La librairie Statistics de python pourrait vous être utile pour cette partie.
+7
+Vous pouvez utiliser la fonction hist ou bar de matplotlib mais devez lui passer en paramètres les classes que
+vous aurez choisies au préalable.
+
+4
+
+S5Info Guide Étudiant Hiver 2026
+iii)
+
+iv)
+v)
+
+vi)
+
+vii)
+
+GIF 591
+
+APP 5
+
+Vous devez déterminer si ces données suivent une distribution normale. Pour ce faire, vous
+observerez premièrement l’histogramme construit précédemment et vous utiliserez ensuite
+un test d’ajustement8 pour le déterminer de façon quantitative.
+Calculez l'intervalle de confiance pour la moyenne des temps de jeu avec un niveau de
+confiance de 95%. Vous ferez alors usage des tables de la distribution normale centrée réduite.
+Effectuez un test d'hypothèse approprié sur la moyenne afin d’évaluer si les données
+fournissent suffisamment de preuves pour rejeter ou ne pas rejeter l'hypothèse de votre
+patron énoncée précédemment. Considérez un niveau de confiance de 95%. Quelle est ici
+l’erreur de première espèce?
+Supposons que la moyenne échantillonnale est un très bon estimé de la moyenne de la
+population et qu’elle peut être considérée comme étant cette dernière, quelle est l’erreur de
+deuxième espèce commise au point précédent si on ne rejette pas l’hypothèse nulle?
+En supposant que l’écart-type des temps de jeu est de 50, effectuez un test d'hypothèse
+bilatéral sur la variance avec un seuil de signification de 5% afin d’évaluer si les données
+fournissent suffisamment de preuves pour rejeter ou ne pas rejeter l'hypothèse nulle.
+
+Mandat no. 3 : Simulations Monte-Carlo10
+Puisque le nouveau jeu développé est un jeu en ligne, vous devez décider des capacités et du nombre de
+serveurs qui géreront l’accès des joueurs au jeu. Pour ce faire, vous devez estimer le nombre moyen de
+joueurs présents sur les serveurs à un instant donné.
+Vous faites les hypothèses suivantes :
+- Les joueurs arrivent et se branchent au jeu de manière aléatoire selon un processus de Poisson avec un
+taux moyen d'arrivées λ (exprimé en joueurs par unité de temps). Fort de vos connaissances en
+probabilités, vous savez que le temps entre chaque arrivée de joueur peut alors être modélisé par une
+variable aléatoire P suivant une loi exponentielle.
+- Chaque joueur joue un temps total aléatoire, indépendant des autres joueurs, qui peut être modélisé
+par une variable aléatoire normale Q (voir mandat no. 2).
+Afin d’estimer le nombre moyen de joueurs présents à un instant donné, vous utiliserez la méthode
+d’échantillonnage par transformation inverse, qui est une technique couramment utilisée dans les
+simulations Monte-Carlo, afin de déterminer les échantillons de P et Q. En utilisant cette méthode, vous
+générerez premièrement au moins 10 000 réalisations de P que vous utiliserez pour déterminer les
+instants de branchements des joueurs. Ensuite, pour chacun de ces branchements, vous tirerez une valeur
+de Q afin de déterminer le temps de ce branchement. Vous validerez, en observant leurs histogrammes
+respectifs, que les réalisations de P et Q représentent effectivement une distribution exponentielle et
+normale respectivement. Vous déterminerez finalement un nombre moyen de joueurs branchés à un
+
+8
+
+Aussi appelé test de Khi-deux ou test de Pearson.
+Vous pourrez compléter ce mandat après avoir effectué le laboratoire.
+
+10
+
+5
+
+S5Info Guide Étudiant Hiver 2026
+
+GIF 591
+
+APP 5
+
+temps donné, en fonction de λ. Vous considérerez au moins 3 valeurs de λ entre 10 branchements /
+minute et 100 branchements / minute.
