@@ -26,7 +26,6 @@ def _(dataset):
     def hours(m):
         return m / 60
 
-
     stats_dict = {
         "Moyenne": hours(dataset.mean()),
         "Mediane": hours(np.median(dataset)),
@@ -113,13 +112,13 @@ def _(dataset):
 def _(freq_df, k):
     mo.md(rf"""
     ## Nombre de classes
-    La loi de Sturges est utilisée pour déterminer le nombre de classes: 
+    La loi de Sturges est utilisée pour déterminer le nombre de classes:
 
     $$
     k = \lceil 1 + \log_2(n) \rceil = {k}
     $$
 
-    Où: 
+    Où:
 
     | | |
     |-|-|
@@ -207,7 +206,8 @@ def _(dataset):
     chi2_result_df = pl.DataFrame(
         {
             "Classe": [
-                f"[{_lower:.0f}, {_upper:.0f}]" for _lower, _upper in _bins_edges
+                f"[{_lower:.0f}, {_upper:.0f}]"
+                for _lower, _upper in _bins_edges
             ],
             "Freq. observee": _observed_freq.tolist(),
             "Freq. attendue": [round(_f, 2) for _f in _expected_freq],
@@ -733,6 +733,49 @@ def _(
     **Conclusion:**
 
     Au niveau de signification α = {alpha_vii}, {"les données fournissent suffisamment de preuves pour rejeter l'hypothèse que l'écart-type de la population est de 50 minutes. La variance de la population est significativement différente de 2500." if reject_h0_vii else "les données ne fournissent pas suffisamment de preuves pour rejeter l'hypothèse nulle. On ne peut pas conclure que la variance de la population est différente de 2500."}
+    """)
+    return
+
+
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    # Extra) Variable aléatoire Q du temps de jeu
+
+    On définit ici la variable aléatoire Q représentant le temps de jeu d'un joueur.
+    """)
+    return
+
+
+@app.cell
+def _(dataset):
+    mu_q = dataset.mean()
+    sigma_q = dataset.std(ddof=1)
+    return mu_q, sigma_q
+
+
+@app.cell(hide_code=True)
+def _(mu_q, sigma_q):
+    mo.md(rf"""
+    ## Définition de la variable aléatoire Q
+
+    Soit **Q** la variable aléatoire représentant le temps de jeu hebdomadaire d'un joueur (en minutes).
+
+    En supposant que les temps de jeu suivent une distribution normale, on a :
+
+    $$Q \sim \mathcal{{N}}(\mu, \sigma^2)$$
+
+    Où :
+
+    | Paramètre | Description | Valeur (min.) |
+    |-----------|-------------|--------------|
+    | $\mu$ | Moyenne | {mu_q:.2f} |
+    | $\sigma$ | Écart-type | {sigma_q:.2f} |
+    | $\sigma^2$ | Variance | {sigma_q**2:.2f} |
+
+    Thus, the probability density function of Q is:
+
+    $$f_Q(q) = \frac{{1}}{{\sigma\sqrt{{2\pi}}}} \exp\left(-\frac{{(q-\mu)^2}}{{2\sigma^2}}\right) = \frac{{1}}{{{sigma_q:.2f}\sqrt{{2\pi}}}} \exp\left(-\frac{{(q-{mu_q:.2f})^2}}{{2 \times {sigma_q**2:.2f}}}\right)$$
     """)
     return
 
