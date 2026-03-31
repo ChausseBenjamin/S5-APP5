@@ -22,35 +22,58 @@ with app.setup:
     import marimo as mo
 
 
+@app.function
+def generate_arrival_times(arrivals_per_minutes, sample_size):
+    uniform_randoms = np.random.rand(sample_size)
+    return -np.log(uniform_randoms) / arrivals_per_minutes
+
+
+@app.function
+def generate_play_durations(average, variance, sample_size):
+    return np.random.normal(average, variance, sample_size)
+
+
 @app.cell
 def _():
-    # Taux d'arrivée à tester (joueurs par minute)
-    tested_arrivals_per_minutes = [1, 5, 10]
-    MU_Q = 20  # durée moyenne de jeu en minutes
-    sample_size = 10000
-
-    mo.md(r"""
-    # Simulation des joueurs actifs
-
-    Nous allons simuler le nombre de joueurs actifs à différents taux d'arrivée et comparer
-    la moyenne réelle observée à la moyenne théorique.
-    """)
-    return MU_Q, sample_size, tested_arrivals_per_minutes
+    tested_arrivals_per_minutes = [10, 67, 100] # Taux d'arrivés testés
+    MU_Q = 280.56                               # Moyenne de temps de jeux d'un joueur
+    SIGMA_Q = 50.38                             # Variance du temps de jeux
+    sample_size = 10000                         # N
+    return MU_Q, SIGMA_Q, sample_size, tested_arrivals_per_minutes
 
 
 @app.cell
-def _(MU_Q):
-    def simulate(rate, N):
-        """
-        Simule N joueurs arrivant selon un taux `rate` (par minute)
-        et jouant un temps selon une distribution normale.
-        """
-        arrivals = np.random.exponential(1 / rate, N)  # en minutes
-        play_time = np.random.normal(MU_Q, MU_Q / 4, N)  # écart-type arbitraire
-        play_time = np.clip(play_time, 0, None)
-        t = np.arange(0, np.max(arrivals + play_time) + 1)
-        active_players = [np.sum((arrivals <= ti) & (arrivals + play_time >= ti)) for ti in t]
-        return arrivals, play_time, t, active_players
+def _(MU_Q, SIGMA_Q):
+    def simulate(arrivals_per_minutes, simulation_time):
+        arrival_times = []
+        t = 0
+
+        # Generating a P for each minute of the simulation
+        # While making the arrivals later and later.
+        while t < simulation_time:
+            t += generate_arrival_times(arrivals_per_minutes, 1)[0]
+            arrival_times.append(t)
+        arrival_times = np.array(arrival_times)
+
+
+        play_time = generate_play_durations(
+            MU_Q,
+            SIGMA_Q,
+            len(arrival_times))
+        departures = arrival_times + play_time
+
+        # This removes the warmup time of the population of servers.
+        # Without this, the averages are off because they assume infinite
+        # amount of time.
+        t_start = 0.3 * simulation_time  # remove transient phase
+        t_values = np.linspace(t_start, simulation_time, 500)
+
+        active_players = []
+        for t in t_values:
+            active = np.sum((arrival_times <= t) & (departures >= t))
+            active_players.append(active)
+
+        return arrival_times, play_time, t_values, active_players
 
     return (simulate,)
 
@@ -59,10 +82,11 @@ def _(MU_Q):
 def _(MU_Q, sample_size, simulate, tested_arrivals_per_minutes):
     results = []
 
+    # Testing every rates set in the test array up in this document
     for rate in tested_arrivals_per_minutes:
         arrivals, play_time, t, active_players = simulate(rate, sample_size)
-        moyenne_theorique = rate * MU_Q
-        moyenne_reel = np.mean(active_players)
+        theorical_average = rate * MU_Q
+        real_average = np.mean(active_players)
 
         # Points à différents instants
         t_check = [10, 50, 500]
@@ -72,9 +96,9 @@ def _(MU_Q, sample_size, simulate, tested_arrivals_per_minutes):
         results.append({
             "rate": rate,
             "sample_size": sample_size,
-            "moyenne_theorique": moyenne_theorique,
-            "moyenne_reel": moyenne_reel,
-            "diff": moyenne_reel - moyenne_theorique,
+            "moyenne_theorique": theorical_average,
+            "moyenne_reel": real_average,
+            "diff": real_average - theorical_average,
             "peak": np.max(active_players),
             "active_at_t": active_at_t,
             "arrivals": arrivals,
@@ -85,17 +109,18 @@ def _(MU_Q, sample_size, simulate, tested_arrivals_per_minutes):
 
 @app.cell(hide_code=True)
 def _(results):
+    report = ""
     for _r in results:
-        mo.md(rf"""
-        ## Taux: {_r['rate']} joueurs / minute
-        - Nombre de joueurs simulés: {_r['sample_size']}
-        - Moyenne réelle de joueurs actifs: {_r['moyenne_reel']:.2f}
-        - Moyenne théorique: {_r['moyenne_theorique']:.2f}
-        - Différence moyenne réel vs théorique: {_r['diff']:.2f}
-        - Peak simultané: {_r['peak']}
+        report += f"""## {_r["rate"]} branchements / minute
+        - Temps de la simulation:\t{_r["sample_size"]} minutes
+        - Moyennes de joueurs actifs:
+            - Échantillon / réel: {_r["moyenne_reel"]:.2f}
+            - Théorique:          {_r["moyenne_theorique"]:.2f}
+            - Différence:         {_r["diff"]:.2f}
+        - Peak de joueurs: {_r["peak"]}
         - Joueurs actifs à différents instants:
-            {"".join([f"- t={ti} min : {n}\n" for ti, n in _r['active_at_t'].items()])}
-        """)
+        {"".join([f"\t- t={ti} min : {n}\n" for ti, n in _r["active_at_t"].items()])}\n"""
+    mo.md(report)
     return
 
 
