@@ -26,13 +26,23 @@ def _():
 @app.cell
 def _():
     x = np.arange(0, 4 * np.pi, 0.01)
-    y = np.sin(x)
-    return x, y
+    s_1 = mo.ui.slider(1, 100)
+    s_2 = mo.ui.slider(1, 100)
+    mo.vstack([s_1, s_2])
+    return s_1, s_2, x
 
 
 @app.cell
-def _(x, y):
-    plt.plot(x, y, color="red")
+def _(s_1, s_2, x):
+    y_1 = np.sin(x * (s_2.value / 100)) * s_1.value
+    y_2 = np.cos(x * (s_1.value / 100)) * s_2.value
+    return y_1, y_2
+
+
+@app.cell
+def _(x, y_1, y_2):
+    plt.plot(x, y_1, color="red")
+    plt.plot(x, y_2, color="blue")
     plt.gca()
     return
 

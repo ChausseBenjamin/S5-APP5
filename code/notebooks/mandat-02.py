@@ -26,7 +26,6 @@ def _(dataset):
     def hours(m):
         return m / 60
 
-
     stats_dict = {
         "Moyenne": hours(dataset.mean()),
         "Mediane": hours(np.median(dataset)),
@@ -207,7 +206,8 @@ def _(dataset):
     chi2_result_df = pl.DataFrame(
         {
             "Classe": [
-                f"[{_lower:.0f}, {_upper:.0f}]" for _lower, _upper in _bins_edges
+                f"[{_lower:.0f}, {_upper:.0f}]"
+                for _lower, _upper in _bins_edges
             ],
             "Freq. observee": _observed_freq.tolist(),
             "Freq. attendue": [round(_f, 2) for _f in _expected_freq],
