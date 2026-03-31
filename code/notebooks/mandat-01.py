@@ -321,7 +321,7 @@ def _(mo):
     \frac{1}{\sigma_Y(z) \sqrt{2\pi}} \, e^{-\frac{y^2}{2\sigma_Y(z)^2}}
     $$
 
-    #### Probabilité d'ouvrir la porte à moins d'un mètre
+    #### Début de la probabilité d'ouvrir la porte à moins d'un mètre
     Pour réussir, il faut que les coordonnées du lancé tombent à l'intérieur d'un cercle de rayon de $\le 0.1$.
     La condition est simple grâce au théorème de Pythagore:
     $$
@@ -341,7 +341,7 @@ def _(mo):
 
     ##### Pourquoi on ne fait pas l’intégrale à la main
 
-    La probabilité qu'une variable continue tombe dans une région donnée se calcule via son **CDF**, ce qui implique une **intégrale**.
+    La probabilité qu'une variable continue tombe dans une région donnée se calcule avec son **CDF**, ça implique une **intégrale**.
     Dans notre cas, il s'agit d'une double intégrale quand même assez complex:
 
     $$
