@@ -238,6 +238,7 @@ def _(MU_Q, SIGMA_Q):
 
     return (simulate,)
 
+
 @app.cell(hide_code=True)
 def _():
     mo.md(r"""
@@ -245,9 +246,9 @@ def _():
     Le code suivant éxecute la simulation monte-carlo pour chaque taux de branchements voulu.
     Elle vient sauvegarder certaines valeurs analysé afin d'être utilisé dans les histogrammes
     et des affichages.
-          
+
     Elle prouve aussi la réponse au besoin d'être capable de dire combiens de joueurs sont connecté
-    à un instant $t$, et fait une comparaison de la moyenne théorique ($\lambda\times\mu_Q$) versus réel. 
+    à un instant $t$, et fait une comparaison de la moyenne théorique ($\lambda\times\mu_Q$) versus réel.
     """)
     return
 
@@ -299,11 +300,17 @@ def _(results):
 
 
 @app.cell
-def _(MU_Q, results):
+def _(MU_Q, results, sample_size):
     for _r in results:
+
+        P = generate_arrival_times(_r['rate'], sample_size)
+
+        # Histogram of generated inter-arrival times
+
         plt.figure(figsize=(10,4))
         plt.subplot(1,2,1)
-        plt.hist(_r['arrivals'], bins=50, density=True)
+        plt.hist(P, bins=50, density=True, label='Generated P')
+        #plt.hist(_r['arrivals'], bins=50, density=True)
         plt.title(f"Arrivées (λ={_r['rate']}/min)")
 
         plt.subplot(1,2,2)
@@ -322,14 +329,14 @@ def _():
     C'est une belle simulation, mais malheureusement elle est très loin d'une situation réel.
     En effet, elle assume un taux de branchement constant à travers la journée, tandis que le taux change en fonction de l'heure.
     Elle assume aussi une moyenne de temps de jeux constant, alors qu'en réalité, les gens jouent plus les fins de semaines que les journées de travail.
-          
+
     Tout ceci ne prend pas en compte le plus gros problème potentiel. Lorsqu'un jeux est mis sur le marché, on observe une fonction décroissante du
     nombre de joueur à travers le temps, avec un énorme montant de joueurs au tout début de la mise en marché.
     S'ils utilisent des moyennes pour quantifié leurs besoins en serveurs, la réalité vas vite les rattrapés lors du lancement du jeux.
-          
+
     Ils ont besoin au minimum du double de l'infrastructure prévus pour les premières semaines de la mises en marché, avec possibilités d'aggrendissements
     temporaires lors d'évènements saisoniers ou des periodes de fêtes nationaux.
-          
+
     En bref, c'est une bonne simulation de moyenne, mais ça ne devrait pas être la seule métrique de prise de décisions pour l'infrastructure de serveurs.
     """)
     return
