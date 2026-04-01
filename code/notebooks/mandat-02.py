@@ -15,6 +15,14 @@ with app.setup:
     import matplotlib as mpl
 
 
+@app.cell(hide_code=True)
+def _():
+    mo.md(r"""
+    # Mandat - 02: Statistiques descriptives et inférence statistique
+    """)
+    return
+
+
 @app.cell
 def _():
     dataset = np.loadtxt("input/TempsDeJeu.txt")
@@ -27,14 +35,14 @@ def _(dataset):
         return m / 60
 
     stats_dict = {
-        "Moyenne": hours(dataset.mean()),
-        "Mediane": hours(np.median(dataset)),
-        "Mode": hours(stats.mode(dataset).mode.item()),
-        "Ecart type": hours(np.std(dataset, ddof=1)),
-        "Variance": hours(np.var(dataset, ddof=1)),
-        "Min": hours(dataset.min()),
-        "Max": hours(dataset.max()),
-        "Etendue": hours(np.ptp(dataset)),
+        "Moyenne": dataset.mean(),
+        "Mediane": np.median(dataset),
+        "Mode": stats.mode(dataset).mode.item(),
+        "Ecart type": np.std(dataset, ddof=1),
+        "Variance": np.var(dataset, ddof=1),
+        "Min": dataset.min(),
+        "Max": dataset.max(),
+        "Etendue": np.ptp(dataset),
     }
 
     df = pl.DataFrame(
@@ -171,33 +179,61 @@ def _(dataset):
     _min_val, _max_val = dataset.min(), dataset.max()
     _amplitude = (_max_val - _min_val) / _k_chi2
 
-    _observed_freq = []
-    _expected_freq = []
-    _bins_edges = []
+    # Calculate initial observed and expected frequencies
+    _observed_freq_raw = []
+    _expected_freq_raw = []
+    _bins_edges_raw = []
 
     for _i in range(_k_chi2):
         _lower = _min_val + _i * _amplitude
         _upper = _min_val + (_i + 1) * _amplitude
-        _bins_edges.append((_lower, _upper))
+        _bins_edges_raw.append((_lower, _upper))
 
         _count_obs = np.sum(
             (dataset >= _lower) & (dataset < _upper)
             if _i < _k_chi2 - 1
             else (dataset >= _lower) & (dataset <= _upper)
         )
-        _observed_freq.append(_count_obs)
+        _observed_freq_raw.append(_count_obs)
 
         _prob_lower = stats.norm.cdf(_lower, loc=_mean, scale=_std)
         _prob_upper = stats.norm.cdf(_upper, loc=_mean, scale=_std)
         _prob_class = _prob_upper - _prob_lower
-        _expected_freq.append(_n * _prob_class)
+        _expected_freq_raw.append(_n * _prob_class)
 
+    # ADJUSTMENT: Merge classes with expected frequency < 5
+    _observed_freq = []
+    _expected_freq = []
+    _bins_edges = []
+
+    _i = 0
+    while _i < len(_expected_freq_raw):
+        # Start a new class
+        _obs_merged = _observed_freq_raw[_i]
+        _exp_merged = _expected_freq_raw[_i]
+        _lower_merged = _bins_edges_raw[_i][0]
+        _upper_merged = _bins_edges_raw[_i][1]
+
+        # Merge with subsequent classes while expected frequency < 5
+        while _exp_merged < 5 and _i + 1 < len(_expected_freq_raw):
+            _i += 1
+            _obs_merged += _observed_freq_raw[_i]
+            _exp_merged += _expected_freq_raw[_i]
+            _upper_merged = _bins_edges_raw[_i][1]
+
+        _observed_freq.append(_obs_merged)
+        _expected_freq.append(_exp_merged)
+        _bins_edges.append((_lower_merged, _upper_merged))
+        _i += 1
+
+    # Convert to arrays
     _observed_freq = np.array(_observed_freq)
     _expected_freq = np.array(_expected_freq)
 
     chi2_stat = np.sum((_observed_freq - _expected_freq) ** 2 / _expected_freq)
 
-    ddof_chi2 = _k_chi2 - 1 - 2
+    # Degrees of freedom: (number of classes after merging) - 1 - 2
+    ddof_chi2 = len(_observed_freq) - 1 - 2
     p_value = 1 - stats.chi2.cdf(chi2_stat, df=ddof_chi2)
 
     alpha = 0.05
@@ -296,7 +332,7 @@ def _(dataset, hours):
             ],
             "Valeur": [
                 f"{sample_mean:.2f}",
-                f"{hours(sample_mean):.2f}",
+                f"{sample_mean:.2f}",
                 f"{sample_std:.2f}",
                 f"{n_samples}",
                 f"{confidence_level * 100:.0f}%",
@@ -305,8 +341,8 @@ def _(dataset, hours):
                 f"{margin_of_error:.2f}",
                 f"{ci_lower:.2f}",
                 f"{ci_upper:.2f}",
-                f"{hours(ci_lower):.2f}",
-                f"{hours(ci_upper):.2f}",
+                f"{ci_lower:.2f}",
+                f"{ci_upper:.2f}",
             ],
         }
     )
@@ -413,9 +449,9 @@ def _(dataset, hours):
                 "μ ≥ 300",
                 "μ < 300",
                 f"{mu_0}",
-                f"{hours(mu_0):.2f}",
+                f"{mu_0:.2f}",
                 f"{x_bar:.2f}",
-                f"{hours(x_bar):.2f}",
+                f"{x_bar:.2f}",
                 f"{s:.2f}",
                 f"{n}",
                 f"{z_stat:.4f}",
@@ -777,11 +813,6 @@ def _(mu_q, sigma_q):
 
     $$f_Q(q) = \frac{{1}}{{\sigma\sqrt{{2\pi}}}} \exp\left(-\frac{{(q-\mu)^2}}{{2\sigma^2}}\right) = \frac{{1}}{{{sigma_q:.2f}\sqrt{{2\pi}}}} \exp\left(-\frac{{(q-{mu_q:.2f})^2}}{{2 \times {sigma_q**2:.2f}}}\right)$$
     """)
-    return
-
-
-@app.cell
-def _():
     return
 
 
