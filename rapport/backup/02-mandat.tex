@@ -1,0 +1,1500 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \makeatletter
+    \newsavebox\pandoc@box
+    \newcommand*\pandocbounded[1]{%
+      \sbox\pandoc@box{#1}%
+      % scaling factors for width and height
+      \Gscale@div\@tempa\textheight{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+      \Gscale@div\@tempb\linewidth{\wd\pandoc@box}%
+      % select the smaller of both
+      \ifdim\@tempb\p@<\@tempa\p@
+        \let\@tempa\@tempb
+      \fi
+      % scaling accordingly (\@tempa < 1)
+      \ifdim\@tempa\p@<\p@
+        \scalebox{\@tempa}{\usebox\pandoc@box}%
+      % scaling not needed, use as it is
+      \else
+        \usebox{\pandoc@box}%
+      \fi
+    }
+    \makeatother
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{02-mandat}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{marimo}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{mo}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{numpy}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{np}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{polars}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{pl}
+\PY{k+kn}{from}\PY{+w}{ }\PY{n+nn}{scipy}\PY{+w}{ }\PY{k+kn}{import} \PY{n}{stats}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{plt}
+\PY{k+kn}{import}\PY{+w}{ }\PY{n+nn}{matplotlib}\PY{+w}{ }\PY{k}{as}\PY{+w}{ }\PY{n+nn}{mpl}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \section{Mandat - 02: Statistiques descriptives et inférence
+statistique}\label{mandat---02-statistiques-descriptives-et-infuxe9rence-statistique}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{dataset} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{loadtxt}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../input/TempsDeJeu.txt}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def}\PY{+w}{ }\PY{n+nf}{hours}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{:}
+    \PY{k}{return} \PY{n}{m} \PY{o}{/} \PY{l+m+mi}{60}
+
+\PY{n}{stats\PYZus{}dict} \PY{o}{=} \PY{p}{\PYZob{}}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mediane}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{median}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mode}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{stats}\PY{o}{.}\PY{n}{mode}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{o}{.}\PY{n}{mode}\PY{o}{.}\PY{n}{item}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ecart type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{dataset}\PY{p}{,} \PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Variance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{dataset}\PY{p}{,} \PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Min}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dataset}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Max}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{dataset}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Etendue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{np}\PY{o}{.}\PY{n}{ptp}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{p}{,}
+\PY{p}{\PYZcb{}}
+
+\PY{n}{df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metrique}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n+nb}{list}\PY{p}{(}\PY{n}{stats\PYZus{}dict}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{v}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{k}{for} \PY{n}{v} \PY{o+ow}{in} \PY{n}{stats\PYZus{}dict}\PY{o}{.}\PY{n}{values}\PY{p}{(}\PY{p}{)}\PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{} I) Statistiques descriptives des temps de jeu}
+
+\PY{l+s+s2}{Cette section calcule les statistiques descriptives des temps de jeu (moyenne, médiane, mode, écart\PYZhy{}type, variance, min, max, étendue) conformément à la première exigence du mandat.}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{23}{}
+    
+    \section{I) Statistiques descriptives des temps de
+jeu}\label{i-statistiques-descriptives-des-temps-de-jeu}
+
+Cette section calcule les statistiques descriptives des temps de jeu
+(moyenne, médiane, mode, écart-type, variance, min, max, étendue)
+conformément à la première exigence du mandat.
+
+    
+
+    \section{II) Construction de l'histogramme des
+données}\label{ii-construction-de-lhistogramme-des-donnuxe9es}
+
+Cette section construit l'histogramme des temps de jeu en utilisant la
+loi de Sturges pour déterminer le nombre de classes, puis calcule les
+fréquences, fréquences relatives et fréquences cumulées.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{k} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log2}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{min\PYZus{}val}\PY{p}{,} \PY{n}{max\PYZus{}val} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{dataset}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}
+\PY{n}{amplitude} \PY{o}{=} \PY{p}{(}\PY{n}{max\PYZus{}val} \PY{o}{\PYZhy{}} \PY{n}{min\PYZus{}val}\PY{p}{)} \PY{o}{/} \PY{n}{k}
+
+\PY{n}{classes} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{limites} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{centres} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{frequences} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{:}
+    \PY{n}{lower} \PY{o}{=} \PY{n}{min\PYZus{}val} \PY{o}{+} \PY{n}{i} \PY{o}{*} \PY{n}{amplitude}
+    \PY{n}{upper} \PY{o}{=} \PY{n}{min\PYZus{}val} \PY{o}{+} \PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{amplitude}
+    \PY{n}{centres}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{lower} \PY{o}{+} \PY{n}{upper}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}\PY{p}{)}
+    \PY{n}{limites}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{[}\PY{l+s+si}{\PYZob{}}\PY{n}{lower}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{upper}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+    \PY{k}{if} \PY{n}{i} \PY{o}{==} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{:}
+        \PY{n}{limites}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{[}\PY{l+s+si}{\PYZob{}}\PY{n}{lower}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{upper}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{]}\PY{l+s+s2}{\PYZdq{}}
+
+    \PY{n}{count} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}
+        \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{lower}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZlt{}} \PY{n}{upper}\PY{p}{)}
+        \PY{k}{if} \PY{n}{i} \PY{o}{\PYZlt{}} \PY{n}{k} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+        \PY{k}{else} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{lower}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{upper}\PY{p}{)}
+    \PY{p}{)}
+    \PY{n}{frequences}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{count}\PY{p}{)}
+
+\PY{n}{freq\PYZus{}relatives} \PY{o}{=} \PY{p}{[}\PY{n}{f} \PY{o}{/} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)} \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{frequences}\PY{p}{]}
+\PY{n}{freq\PYZus{}cumulees} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{cumsum}\PY{p}{(}\PY{n}{frequences}\PY{p}{)}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}
+
+\PY{n}{classes\PYZus{}col} \PY{o}{=} \PY{p}{[}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Classe }\PY{l+s+si}{\PYZob{}}\PY{n}{i}\PY{+w}{ }\PY{o}{+}\PY{+w}{ }\PY{l+m+mi}{1}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{]}
+
+\PY{n}{freq\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Classes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{classes\PYZus{}col}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Limites}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{limites}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Centres}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{c}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{centres}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freq. relatives}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{)} \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{freq\PYZus{}relatives}\PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freq. cumulees}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{freq\PYZus{}cumulees}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Nombre de classes}
+\PY{l+s+s2}{La loi de Sturges est utilisée pour déterminer le nombre de classes:}
+
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{k = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{lceil 1 + }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{log\PYZus{}2(n) }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{rceil = }\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{Où:}
+
+\PY{l+s+s2}{| | |}
+\PY{l+s+s2}{|\PYZhy{}|\PYZhy{}|}
+\PY{l+s+s2}{| k | nombre de classes |}
+\PY{l+s+s2}{| n | taille de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon |}
+
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Population du tableau de valeurs}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{freq\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{25}{}
+    
+    \subsection{Nombre de classes}\label{nombre-de-classes}
+
+La loi de Sturges est utilisée pour déterminer le nombre de classes:
+
+\[
+k = \lceil 1 + \log_2(n) \rceil = 8
+\]
+
+Où:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+k & nombre de classes \\
+n & taille de l'échantillon \\
+\end{longtable}
+
+\subsection{Population du tableau de
+valeurs}\label{population-du-tableau-de-valeurs}
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{dataset}\PY{p}{,} \PY{n}{bins}\PY{o}{=}\PY{n}{k}\PY{p}{,} \PY{n}{edgecolor}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{black}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{alpha}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Temps de jeu (minutes)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Frequence}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Histogramme des temps de jeu (}\PY{l+s+si}{\PYZob{}}\PY{n}{k}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ classes)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axvline}\PY{p}{(}
+    \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+    \PY{n}{color}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{red}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{linestyle}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+    \PY{n}{label}\PY{o}{=}\PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne: }\PY{l+s+si}{\PYZob{}}\PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.1f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<Axes: title=\{'center': 'Histogramme des temps de jeu (8 classes)'\},
+xlabel='Temps de jeu (minutes)', ylabel='Frequence'>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \section{III) Les données suivent-elles une distribution
+normale?}\label{iii-les-donnuxe9es-suivent-elles-une-distribution-normale}
+
+Cette section vérifie si les temps de jeu suivent une distribution
+normale en utilisant un test de Khi-deux d'ajustement, comme exigé dans
+la troisième partie du mandat. En observant l'histogramme ci-dessus, on
+peut voir que les données semblent suivre une distribution
+approximativement normale (forme de cloche). Pour le confirmer
+quantitativement, nous utilisons le test de Khi-deux.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{\PYZus{}mean} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{\PYZus{}std} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{\PYZus{}n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+
+\PY{n}{\PYZus{}k\PYZus{}chi2} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{log2}\PY{p}{(}\PY{n}{\PYZus{}n}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n}{\PYZus{}min\PYZus{}val}\PY{p}{,} \PY{n}{\PYZus{}max\PYZus{}val} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{dataset}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}
+\PY{n}{\PYZus{}amplitude} \PY{o}{=} \PY{p}{(}\PY{n}{\PYZus{}max\PYZus{}val} \PY{o}{\PYZhy{}} \PY{n}{\PYZus{}min\PYZus{}val}\PY{p}{)} \PY{o}{/} \PY{n}{\PYZus{}k\PYZus{}chi2}
+
+\PY{c+c1}{\PYZsh{} Calculate initial observed and expected frequencies}
+\PY{n}{\PYZus{}observed\PYZus{}freq\PYZus{}raw} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{\PYZus{}bins\PYZus{}edges\PYZus{}raw} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{\PYZus{}i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{\PYZus{}k\PYZus{}chi2}\PY{p}{)}\PY{p}{:}
+    \PY{n}{\PYZus{}lower} \PY{o}{=} \PY{n}{\PYZus{}min\PYZus{}val} \PY{o}{+} \PY{n}{\PYZus{}i} \PY{o}{*} \PY{n}{\PYZus{}amplitude}
+    \PY{n}{\PYZus{}upper} \PY{o}{=} \PY{n}{\PYZus{}min\PYZus{}val} \PY{o}{+} \PY{p}{(}\PY{n}{\PYZus{}i} \PY{o}{+} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{\PYZus{}amplitude}
+    \PY{n}{\PYZus{}bins\PYZus{}edges\PYZus{}raw}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{\PYZus{}lower}\PY{p}{,} \PY{n}{\PYZus{}upper}\PY{p}{)}\PY{p}{)}
+
+    \PY{n}{\PYZus{}count\PYZus{}obs} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}
+        \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{\PYZus{}lower}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZlt{}} \PY{n}{\PYZus{}upper}\PY{p}{)}
+        \PY{k}{if} \PY{n}{\PYZus{}i} \PY{o}{\PYZlt{}} \PY{n}{\PYZus{}k\PYZus{}chi2} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+        \PY{k}{else} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{\PYZus{}lower}\PY{p}{)} \PY{o}{\PYZam{}} \PY{p}{(}\PY{n}{dataset} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{\PYZus{}upper}\PY{p}{)}
+    \PY{p}{)}
+    \PY{n}{\PYZus{}observed\PYZus{}freq\PYZus{}raw}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{\PYZus{}count\PYZus{}obs}\PY{p}{)}
+
+    \PY{n}{\PYZus{}prob\PYZus{}lower} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{\PYZus{}lower}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{n}{\PYZus{}mean}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{n}{\PYZus{}std}\PY{p}{)}
+    \PY{n}{\PYZus{}prob\PYZus{}upper} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{\PYZus{}upper}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{n}{\PYZus{}mean}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{n}{\PYZus{}std}\PY{p}{)}
+    \PY{n}{\PYZus{}prob\PYZus{}class} \PY{o}{=} \PY{n}{\PYZus{}prob\PYZus{}upper} \PY{o}{\PYZhy{}} \PY{n}{\PYZus{}prob\PYZus{}lower}
+    \PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{\PYZus{}n} \PY{o}{*} \PY{n}{\PYZus{}prob\PYZus{}class}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} ADJUSTMENT: Merge classes with expected frequency \PYZlt{} 5}
+\PY{n}{\PYZus{}observed\PYZus{}freq} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{\PYZus{}expected\PYZus{}freq} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{\PYZus{}bins\PYZus{}edges} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+
+\PY{n}{\PYZus{}i} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{k}{while} \PY{n}{\PYZus{}i} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Start a new class}
+    \PY{n}{\PYZus{}obs\PYZus{}merged} \PY{o}{=} \PY{n}{\PYZus{}observed\PYZus{}freq\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}
+    \PY{n}{\PYZus{}exp\PYZus{}merged} \PY{o}{=} \PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}
+    \PY{n}{\PYZus{}lower\PYZus{}merged} \PY{o}{=} \PY{n}{\PYZus{}bins\PYZus{}edges\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+    \PY{n}{\PYZus{}upper\PYZus{}merged} \PY{o}{=} \PY{n}{\PYZus{}bins\PYZus{}edges\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} Merge with subsequent classes while expected frequency \PYZlt{} 5}
+    \PY{k}{while} \PY{n}{\PYZus{}exp\PYZus{}merged} \PY{o}{\PYZlt{}} \PY{l+m+mi}{5} \PY{o+ow}{and} \PY{n}{\PYZus{}i} \PY{o}{+} \PY{l+m+mi}{1} \PY{o}{\PYZlt{}} \PY{n+nb}{len}\PY{p}{(}\PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw}\PY{p}{)}\PY{p}{:}
+        \PY{n}{\PYZus{}i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{n}{\PYZus{}obs\PYZus{}merged} \PY{o}{+}\PY{o}{=} \PY{n}{\PYZus{}observed\PYZus{}freq\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}
+        \PY{n}{\PYZus{}exp\PYZus{}merged} \PY{o}{+}\PY{o}{=} \PY{n}{\PYZus{}expected\PYZus{}freq\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}
+        \PY{n}{\PYZus{}upper\PYZus{}merged} \PY{o}{=} \PY{n}{\PYZus{}bins\PYZus{}edges\PYZus{}raw}\PY{p}{[}\PY{n}{\PYZus{}i}\PY{p}{]}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+
+    \PY{n}{\PYZus{}observed\PYZus{}freq}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{\PYZus{}obs\PYZus{}merged}\PY{p}{)}
+    \PY{n}{\PYZus{}expected\PYZus{}freq}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{\PYZus{}exp\PYZus{}merged}\PY{p}{)}
+    \PY{n}{\PYZus{}bins\PYZus{}edges}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{\PYZus{}lower\PYZus{}merged}\PY{p}{,} \PY{n}{\PYZus{}upper\PYZus{}merged}\PY{p}{)}\PY{p}{)}
+    \PY{n}{\PYZus{}i} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} Convert to arrays}
+\PY{n}{\PYZus{}observed\PYZus{}freq} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{\PYZus{}observed\PYZus{}freq}\PY{p}{)}
+\PY{n}{\PYZus{}expected\PYZus{}freq} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{\PYZus{}expected\PYZus{}freq}\PY{p}{)}
+
+\PY{n}{chi2\PYZus{}stat} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{(}\PY{n}{\PYZus{}observed\PYZus{}freq} \PY{o}{\PYZhy{}} \PY{n}{\PYZus{}expected\PYZus{}freq}\PY{p}{)} \PY{o}{*}\PY{o}{*} \PY{l+m+mi}{2} \PY{o}{/} \PY{n}{\PYZus{}expected\PYZus{}freq}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Degrees of freedom: (number of classes after merging) \PYZhy{} 1 \PYZhy{} 2}
+\PY{n}{ddof\PYZus{}chi2} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{\PYZus{}observed\PYZus{}freq}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{l+m+mi}{2}
+\PY{n}{p\PYZus{}value} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{stats}\PY{o}{.}\PY{n}{chi2}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{chi2\PYZus{}stat}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{ddof\PYZus{}chi2}\PY{p}{)}
+
+\PY{n}{alpha} \PY{o}{=} \PY{l+m+mf}{0.05}
+\PY{n}{chi2\PYZus{}critical} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{chi2}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{alpha}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{ddof\PYZus{}chi2}\PY{p}{)}
+
+\PY{n}{chi2\PYZus{}result\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Classe}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{[}\PY{l+s+si}{\PYZob{}}\PY{n}{\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{]}\PY{l+s+s2}{\PYZdq{}}
+            \PY{k}{for} \PY{n}{\PYZus{}lower}\PY{p}{,} \PY{n}{\PYZus{}upper} \PY{o+ow}{in} \PY{n}{\PYZus{}bins\PYZus{}edges}
+        \PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freq. observee}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{\PYZus{}observed\PYZus{}freq}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Freq. attendue}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}\PY{n+nb}{round}\PY{p}{(}\PY{n}{\PYZus{}f}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)} \PY{k}{for} \PY{n}{\PYZus{}f} \PY{o+ow}{in} \PY{n}{\PYZus{}expected\PYZus{}freq}\PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{reject\PYZus{}h0} \PY{o}{=} \PY{n}{p\PYZus{}value} \PY{o}{\PYZlt{}} \PY{n}{alpha}
+\PY{n}{conclusion} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{rejeter}\PY{l+s+s2}{\PYZdq{}} \PY{k}{if} \PY{n}{reject\PYZus{}h0} \PY{k}{else} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ne pas rejeter}\PY{l+s+s2}{\PYZdq{}}
+
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Test de Khi\PYZhy{}deux (test de Pearson)}
+
+\PY{l+s+s2}{**Hypothèses:**}
+\PY{l+s+s2}{\PYZhy{} H₀: Les données suivent une distribution normale}
+\PY{l+s+s2}{\PYZhy{} H₁: Les données ne suivent pas une distribution normale}
+
+\PY{l+s+s2}{**Résultats:**}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{chi2\PYZus{}result\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Statistiques du test:**}
+
+\PY{l+s+s2}{| Métrique | Valeur |}
+\PY{l+s+s2}{|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|}
+\PY{l+s+s2}{| Statistique χ² | }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}stat}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+\PY{l+s+s2}{| Degrés de liberté | }\PY{l+s+si}{\PYZob{}}\PY{n}{ddof\PYZus{}chi2}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+\PY{l+s+s2}{| Valeur p | }\PY{l+s+si}{\PYZob{}}\PY{n}{p\PYZus{}value}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+\PY{l+s+s2}{| Valeur critique (α=}\PY{l+s+si}{\PYZob{}}\PY{n}{alpha}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{) | }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}critical}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+
+\PY{l+s+s2}{**Conclusion:**}
+
+\PY{l+s+s2}{Au seuil de signification α = }\PY{l+s+si}{\PYZob{}}\PY{n}{alpha}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, on }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**rejette**}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**ne rejette pas**}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse nulle.}
+
+\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Les données **ne suivent pas** une distribution normale.}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Les données **suivent** une distribution normale.}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{28}{}
+    
+    \subsection{Test de Khi-deux (test de
+Pearson)}\label{test-de-khi-deux-test-de-pearson}
+
+\textbf{Hypothèses:} - H₀: Les données suivent une distribution normale
+- H₁: Les données ne suivent pas une distribution normale
+
+\textbf{Résultats:}
+
+\textbf{Statistiques du test:}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Métrique & Valeur \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Statistique χ² & 3.3721 \\
+Degrés de liberté & 4 \\
+Valeur p & 0.4976 \\
+Valeur critique (α=0.05) & 9.4877 \\
+\end{longtable}
+
+\textbf{Conclusion:}
+
+Au seuil de signification α = 0.05, on \textbf{ne rejette pas}
+l'hypothèse nulle.
+
+Les données \textbf{suivent} une distribution normale.
+
+    
+
+    \section{IV) Intervalle de confiance pour la
+moyenne}\label{iv-intervalle-de-confiance-pour-la-moyenne}
+
+Cette section calcule l'intervalle de confiance à 95\% pour la moyenne
+des temps de jeu en utilisant la distribution normale centrée réduite,
+comme requis dans la quatrième partie du mandat.
+
+Calculez l'intervalle de confiance pour la moyenne des temps de jeu avec
+un niveau de confiance de 95\%. Vous ferez alors usage des tables de la
+distribution normale centrée réduite.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{confidence\PYZus{}level} \PY{o}{=} \PY{l+m+mf}{0.95}
+\PY{n}{alpha\PYZus{}ci} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{confidence\PYZus{}level}
+
+\PY{n}{sample\PYZus{}mean} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{sample\PYZus{}std} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{n\PYZus{}samples} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+
+\PY{n}{z\PYZus{}critical} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{alpha\PYZus{}ci} \PY{o}{/} \PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n}{standard\PYZus{}error} \PY{o}{=} \PY{n}{sample\PYZus{}std} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{n\PYZus{}samples}\PY{p}{)}
+\PY{n}{margin\PYZus{}of\PYZus{}error} \PY{o}{=} \PY{n}{z\PYZus{}critical} \PY{o}{*} \PY{n}{standard\PYZus{}error}
+
+\PY{n}{ci\PYZus{}lower} \PY{o}{=} \PY{n}{sample\PYZus{}mean} \PY{o}{\PYZhy{}} \PY{n}{margin\PYZus{}of\PYZus{}error}
+\PY{n}{ci\PYZus{}upper} \PY{o}{=} \PY{n}{sample\PYZus{}mean} \PY{o}{+} \PY{n}{margin\PYZus{}of\PYZus{}error}
+
+\PY{n}{ci\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Paramètre}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon (h)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Écart\PYZhy{}type de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Taille de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Niveau de confiance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur critique z}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erreur standard (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Marge d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Limite inférieure (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Limite supérieure (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Limite inférieure (h)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Limite supérieure (h)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sample\PYZus{}mean}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sample\PYZus{}mean}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sample\PYZus{}std}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{n\PYZus{}samples}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{confidence\PYZus{}level}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}critical}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{standard\PYZus{}error}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{margin\PYZus{}of\PYZus{}error}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Calcul de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{intervalle de confiance}
+
+\PY{l+s+s2}{Pour un niveau de confiance de }\PY{l+s+si}{\PYZob{}}\PY{n}{confidence\PYZus{}level}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}, l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{intervalle de confiance pour la moyenne est calculé avec la formule:}
+
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{bar}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{x}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pm z\PYZus{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{alpha/2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{times }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{s}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sqrt}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{n}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{Où:}
+
+\PY{l+s+s2}{| Symbole | Description |}
+\PY{l+s+s2}{|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|}
+\PY{l+s+s2}{| \PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{bar}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{x}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{\PYZdl{} | Moyenne de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon |}
+\PY{l+s+s2}{| \PYZdl{}z\PYZus{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{alpha/2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{\PYZdl{} | Valeur critique de la distribution normale (pour α=}\PY{l+s+si}{\PYZob{}}\PY{n}{alpha\PYZus{}ci}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{) |}
+\PY{l+s+s2}{| \PYZdl{}s\PYZdl{} | Écart\PYZhy{}type de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon |}
+\PY{l+s+s2}{| \PYZdl{}n\PYZdl{} | Taille de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon |}
+
+\PY{l+s+s2}{**Résultats:**}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{ci\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Conclusion:**}
+
+\PY{l+s+s2}{Avec un niveau de confiance de }\PY{l+s+si}{\PYZob{}}\PY{n}{confidence\PYZus{}level}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}, l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{intervalle de confiance pour la moyenne des temps de jeu est:}
+
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{[}\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{ci\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{] }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{text}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{ minutes}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ = [}\PY{l+s+si}{\PYZob{}}\PY{n}{hours}\PY{p}{(}\PY{n}{ci\PYZus{}lower}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{hours}\PY{p}{(}\PY{n}{ci\PYZus{}upper}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{] }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{text}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{ heures}\PY{l+s+se}{\PYZcb{}\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{Cela signifie que nous sommes }\PY{l+s+si}{\PYZob{}}\PY{n}{confidence\PYZus{}level}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.0f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} confiants que la vraie moyenne de la population se situe dans cet intervalle.}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{30}{}
+    
+    \subsection{Calcul de l'intervalle de
+confiance}\label{calcul-de-lintervalle-de-confiance}
+
+Pour un niveau de confiance de 95\%, l'intervalle de confiance pour la
+moyenne est calculé avec la formule:
+
+\[
+\bar{x} \pm z_{\alpha/2} \times \frac{s}{\sqrt{n}}
+\]
+
+Où:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.4091}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5909}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Symbole
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Description
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\bar{x}\) & Moyenne de l'échantillon \\
+\(z_{\alpha/2}\) & Valeur critique de la distribution normale (pour
+α=0.050000000000000044) \\
+\(s\) & Écart-type de l'échantillon \\
+\(n\) & Taille de l'échantillon \\
+\end{longtable}
+
+\textbf{Résultats:}
+
+\textbf{Conclusion:}
+
+Avec un niveau de confiance de 95\%, l'intervalle de confiance pour la
+moyenne des temps de jeu est:
+
+\[
+[270.71, 290.45] \text{ minutes} = [4.51, 4.84] \text{ heures}
+\]
+
+Cela signifie que nous sommes 95\% confiants que la vraie moyenne de la
+population se situe dans cet intervalle.
+
+    
+
+    \section{V) Test d'hypothèse sur la
+moyenne}\label{v-test-dhypothuxe8se-sur-la-moyenne}
+
+Cette section effectue un test d'hypothèse unilatéral à gauche sur la
+moyenne pour vérifier si le temps de jeu moyen est significativement
+inférieur aux 5 heures (300 minutes) estimées par le patron, comme
+requis dans la cinquième partie du mandat.
+
+Effectuez un test d'hypothèse approprié sur la moyenne afin d'évaluer si
+les données fournissent suffisamment de preuves pour rejeter ou ne pas
+rejeter l'hypothèse de votre patron énoncée précédemment. Considérez un
+niveau de confiance de 95\%. Quelle est ici l'erreur de première espèce?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Hypothesis test on the mean}
+\PY{c+c1}{\PYZsh{} H0: μ ≥ 300 (boss claims average playtime is at least 300 minutes)}
+\PY{c+c1}{\PYZsh{} H1: μ \PYZlt{} 300 (one\PYZhy{}tailed test, left\PYZhy{}tailed)}
+
+\PY{n}{mu\PYZus{}0} \PY{o}{=} \PY{l+m+mi}{300}  \PY{c+c1}{\PYZsh{} hypothesized population mean (5 hours = 300 minutes)}
+\PY{n}{alpha\PYZus{}v} \PY{o}{=} \PY{l+m+mf}{0.05}  \PY{c+c1}{\PYZsh{} significance level (95\PYZpc{} confidence)}
+
+\PY{c+c1}{\PYZsh{} Sample statistics}
+\PY{n}{x\PYZus{}bar} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{s} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Test statistic (z\PYZhy{}test since n is large)}
+\PY{n}{z\PYZus{}stat} \PY{o}{=} \PY{p}{(}\PY{n}{x\PYZus{}bar} \PY{o}{\PYZhy{}} \PY{n}{mu\PYZus{}0}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{s} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Critical value for one\PYZhy{}tailed test (left\PYZhy{}tailed)}
+\PY{n}{z\PYZus{}critical\PYZus{}v} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{alpha\PYZus{}v}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} P\PYZhy{}value for one\PYZhy{}tailed test}
+\PY{n}{p\PYZus{}value\PYZus{}v} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{z\PYZus{}stat}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Decision}
+\PY{n}{reject\PYZus{}h0\PYZus{}v} \PY{o}{=} \PY{n}{z\PYZus{}stat} \PY{o}{\PYZlt{}} \PY{n}{z\PYZus{}critical\PYZus{}v}
+
+\PY{c+c1}{\PYZsh{} Type I error (alpha) \PYZhy{} probability of rejecting H0 when H0 is true}
+\PY{n}{type\PYZus{}i\PYZus{}error} \PY{o}{=} \PY{n}{alpha\PYZus{}v}
+
+\PY{n}{hyp\PYZus{}test\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Paramètre}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hypothèse nulle H₀}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hypothèse alternative H₁}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne hypothétisée μ₀ (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne hypothétisée μ₀ (h)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne échantillonnale x̄ (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne échantillonnale x̄ (h)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Écart\PYZhy{}type s (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Taille de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Statistique de test z}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur critique zα}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur p}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Niveau de signification α}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erreur de type I (α)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{μ ≥ 300}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{μ \PYZlt{} 300}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x\PYZus{}bar}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x\PYZus{}bar}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{s}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{n}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}stat}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}critical\PYZus{}v}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{p\PYZus{}value\PYZus{}v}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{alpha\PYZus{}v}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{type\PYZus{}i\PYZus{}error}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Test d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse unilatéral à gauche}
+
+\PY{l+s+s2}{**Formulation des hypothèses:**}
+\PY{l+s+s2}{\PYZhy{} H₀: μ ≥ }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes (}\PY{l+s+si}{\PYZob{}}\PY{n}{hours}\PY{p}{(}\PY{n}{mu\PYZus{}0}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ heures) \PYZhy{} L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse du patron}
+\PY{l+s+s2}{\PYZhy{} H₁: μ \PYZlt{} }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes \PYZhy{} Le temps de jeu moyen est inférieur à 5 heures}
+
+\PY{l+s+s2}{**Méthode:** Test Z (n ≥ 30, distribution normale)}
+
+\PY{l+s+s2}{La statistique de test est:}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{z = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{bar}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{x}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ \PYZhy{} }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu\PYZus{}0}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{s / }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sqrt}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{n}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}stat}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{**Résultats:**}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{hyp\PYZus{}test\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Règle de décision:**}
+
+\PY{l+s+s2}{On rejette H₀ si z \PYZlt{} z\PYZus{}α = }\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}critical\PYZus{}v}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{Puisque z = }\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}stat}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZlt{}}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{z\PYZus{}stat}\PY{+w}{ }\PY{o}{\PYZlt{}}\PY{+w}{ }\PY{n}{z\PYZus{}critical\PYZus{}v}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{≥}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}critical\PYZus{}v}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, on }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**rejette**}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0\PYZus{}v}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**ne rejette pas**}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ H₀.}
+
+\PY{l+s+s2}{**Conclusion:**}
+
+\PY{l+s+s2}{Au niveau de signification α = }\PY{l+s+si}{\PYZob{}}\PY{n}{alpha\PYZus{}v}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{les données fournissent suffisamment de preuves pour rejeter l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse du patron. Le temps de jeu moyen est significativement inférieur à 5 heures par semaine.}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0\PYZus{}v}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{les données ne fournissent pas suffisamment de preuves pour rejeter l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse du patron. On ne peut pas conclure que le temps de jeu moyen est inférieur à 5 heures par semaine.}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Erreur de première espèce (α):**}
+
+\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur de type I est la probabilité de rejeter H₀ alors qu}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{elle est vraie. Ici, α = }\PY{l+s+si}{\PYZob{}}\PY{n}{type\PYZus{}i\PYZus{}error}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{type\PYZus{}i\PYZus{}error}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}.}
+
+\PY{l+s+s2}{Cela signifie qu}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{il y a }\PY{l+s+si}{\PYZob{}}\PY{n}{type\PYZus{}i\PYZus{}error}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} de chance de conclure à tort que le temps de jeu moyen est inférieur à 5 heures, alors qu}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{en réalité il est d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{au moins 5 heures.}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{32}{}
+    
+    \subsection{Test d'hypothèse unilatéral à
+gauche}\label{test-dhypothuxe8se-unilatuxe9ral-uxe0-gauche}
+
+\textbf{Formulation des hypothèses:} - H₀: μ ≥ 300 minutes (5.00 heures)
+- L'hypothèse du patron - H₁: μ \textless{} 300 minutes - Le temps de
+jeu moyen est inférieur à 5 heures
+
+\textbf{Méthode:} Test Z (n ≥ 30, distribution normale)
+
+La statistique de test est: \[
+z = \frac{\bar{x} - \mu_0}{s / \sqrt{n}} = -3.8549
+\]
+
+\textbf{Résultats:}
+
+\textbf{Règle de décision:}
+
+On rejette H₀ si z \textless{} z\_α = -1.6449
+
+Puisque z = -3.8549 \textless{} -1.6449, on \textbf{rejette} H₀.
+
+\textbf{Conclusion:}
+
+Au niveau de signification α = 0.05, les données fournissent
+suffisamment de preuves pour rejeter l'hypothèse du patron. Le temps de
+jeu moyen est significativement inférieur à 5 heures par semaine.
+
+\textbf{Erreur de première espèce (α):}
+
+L'erreur de type I est la probabilité de rejeter H₀ alors qu'elle est
+vraie. Ici, α = 0.05 = 5.0\%.
+
+Cela signifie qu'il y a 5.0\% de chance de conclure à tort que le temps
+de jeu moyen est inférieur à 5 heures, alors qu'en réalité il est d'au
+moins 5 heures.
+
+    
+
+    \section{VI) Erreur de deuxième
+espèce}\label{vi-erreur-de-deuxiuxe8me-espuxe8ce}
+
+Cette section calcule l'erreur de type II (β) en supposant que la
+moyenne échantillonnale est un bon estimé de la vraie moyenne de la
+population, comme demandé dans la sixième partie du mandat.
+
+Supposons que la moyenne échantillonnale est un très bon estimé de la
+moyenne de la population et qu'elle peut être considérée comme étant
+cette dernière, quelle est l'erreur de deuxième espèce commise au point
+précédent si on ne rejette pas l'hypothèse nulle?
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Type II error (β) calculation}
+\PY{c+c1}{\PYZsh{} β = P(not rejecting H0 | H1 is true)}
+\PY{c+c1}{\PYZsh{} Assuming the true population mean is equal to the sample mean (x\PYZus{}bar)}
+
+\PY{c+c1}{\PYZsh{} True population mean (assumed to be the sample mean)}
+\PY{n}{mu\PYZus{}true} \PY{o}{=} \PY{n}{x\PYZus{}bar}
+
+\PY{c+c1}{\PYZsh{} Standard error}
+\PY{n}{se} \PY{o}{=} \PY{n}{s} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{n}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Critical value for the test (x\PYZus{}c such that we reject H0 if x̄ \PYZlt{} x\PYZus{}c)}
+\PY{c+c1}{\PYZsh{} From z\PYZus{}α = (x\PYZus{}c \PYZhy{} μ₀) / se, we get x\PYZus{}c = μ₀ + z\PYZus{}α * se}
+\PY{n}{z\PYZus{}alpha} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{alpha\PYZus{}v}\PY{p}{)}
+\PY{n}{x\PYZus{}critical} \PY{o}{=} \PY{n}{mu\PYZus{}0} \PY{o}{+} \PY{n}{z\PYZus{}alpha} \PY{o}{*} \PY{n}{se}
+
+\PY{c+c1}{\PYZsh{} Type II error: P(x̄ ≥ x\PYZus{}c | μ = μ\PYZus{}true)}
+\PY{c+c1}{\PYZsh{} β = P(Z ≥ (x\PYZus{}c \PYZhy{} μ\PYZus{}true) / se)}
+\PY{n}{z\PYZus{}beta} \PY{o}{=} \PY{p}{(}\PY{n}{x\PYZus{}critical} \PY{o}{\PYZhy{}} \PY{n}{mu\PYZus{}true}\PY{p}{)} \PY{o}{/} \PY{n}{se}
+\PY{n}{beta} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{z\PYZus{}beta}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Power of the test}
+\PY{n}{power} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{beta}
+
+\PY{n}{type\PYZus{}ii\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Paramètre}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Vraie moyenne de la population μ (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Moyenne hypothétisée μ₀ (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erreur standard}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur critique x\PYZus{}c (min)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{z\PYZus{}β}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erreur de type II (β)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Puissance du test (1 \PYZhy{} β)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}true}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{se}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{x\PYZus{}critical}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}beta}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{beta}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{power}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{34}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Calcul de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur de deuxième espèce (β)}
+
+\PY{l+s+s2}{L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur de type II (β) est la probabilité de ne pas rejeter H₀ alors que H₁ est vraie.}
+
+\PY{l+s+s2}{**Hypothèses:**}
+\PY{l+s+s2}{\PYZhy{} On suppose que la vraie moyenne de la population est μ = x̄ = }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}true}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes (}\PY{l+s+si}{\PYZob{}}\PY{n}{hours}\PY{p}{(}\PY{n}{mu\PYZus{}true}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ heures)}
+\PY{l+s+s2}{\PYZhy{} H₀: μ ≥ }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes}
+\PY{l+s+s2}{\PYZhy{} H₁: μ \PYZlt{} }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes}
+
+\PY{l+s+s2}{**Calcul:**}
+
+\PY{l+s+s2}{1. La valeur critique x\PYZus{}c est déterminée par:}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{x\PYZus{}c = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu\PYZus{}0 + z\PYZus{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{alpha }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{times SE = }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ + }\PY{l+s+si}{\PYZob{}}\PY{n}{stats}\PY{o}{.}\PY{n}{norm}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{alpha\PYZus{}v}\PY{p}{)}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{times }\PY{l+s+si}{\PYZob{}}\PY{n}{se}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{x\PYZus{}critical}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{2. L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur de type II est:}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{beta = P(}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{bar}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{X}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{geq x\PYZus{}c | }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu\PYZus{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{vrai}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{) = P}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{left(Z }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{geq }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{x\PYZus{}c \PYZhy{} }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu\PYZus{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{vrai}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{SE}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{right) = P(Z }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{geq }\PY{l+s+si}{\PYZob{}}\PY{n}{z\PYZus{}beta}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{) = }\PY{l+s+si}{\PYZob{}}\PY{n}{beta}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{**Résultats:**}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{type\PYZus{}ii\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Interprétation:**}
+
+\PY{l+s+s2}{\PYZhy{} L}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{erreur de type II (β) = }\PY{l+s+si}{\PYZob{}}\PY{n}{beta}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{beta}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}
+\PY{l+s+s2}{\PYZhy{} Cela signifie qu}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{il y a }\PY{l+s+si}{\PYZob{}}\PY{n}{beta}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{} de chance de ne pas rejeter l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse du patron (μ ≥ 300 min) alors qu}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{en réalité la vraie moyenne est de }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}true}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ minutes.}
+\PY{l+s+s2}{\PYZhy{} La puissance du test (1 \PYZhy{} β) = }\PY{l+s+si}{\PYZob{}}\PY{n}{power}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{power}\PY{+w}{ }\PY{o}{*}\PY{+w}{ }\PY{l+m+mi}{100}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZpc{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{34}{}
+    
+    \subsection{Calcul de l'erreur de deuxième espèce
+(β)}\label{calcul-de-lerreur-de-deuxiuxe8me-espuxe8ce-ux3b2}
+
+L'erreur de type II (β) est la probabilité de ne pas rejeter H₀ alors
+que H₁ est vraie.
+
+\textbf{Hypothèses:} - On suppose que la vraie moyenne de la population
+est μ = x̄ = 280.58 minutes (4.68 heures) - H₀: μ ≥ 300 minutes - H₁: μ
+\textless{} 300 minutes
+
+\textbf{Calcul:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  La valeur critique x\_c est déterminée par: \[
+  x_c = \mu_0 + z_\alpha \times SE = 300 + -1.6449 \times 5.0377 = 291.71
+  \]
+\item
+  L'erreur de type II est: \[
+  \beta = P(\bar{X} \geq x_c | \mu = \mu_{vrai}) = P\left(Z \geq \frac{x_c - \mu_{vrai}}{SE}\right) = P(Z \geq 2.2101) = 0.0135
+  \]
+\end{enumerate}
+
+\textbf{Résultats:}
+
+\textbf{Interprétation:}
+
+\begin{itemize}
+\tightlist
+\item
+  L'erreur de type II (β) = 0.0135 = 1.35\%
+\item
+  Cela signifie qu'il y a 1.35\% de chance de ne pas rejeter l'hypothèse
+  du patron (μ ≥ 300 min) alors qu'en réalité la vraie moyenne est de
+  280.58 minutes.
+\item
+  La puissance du test (1 - β) = 0.9865 = 98.65\%
+\end{itemize}
+
+    
+
+    \section{VII) Test d'hypothèse bilatéral sur la
+variance}\label{vii-test-dhypothuxe8se-bilatuxe9ral-sur-la-variance}
+
+Cette section effectue un test du chi-deux bilatéral sur la variance
+pour vérifier si l'écart-type des temps de jeu est significativement
+différent de 50 minutes, comme exigé dans la septième partie du mandat.
+
+En supposant que l'écart-type des temps de jeu est de 50, effectuez un
+test d'hypothèse bilatéral sur la variance avec un seuil de
+signification de 5\% afin d'évaluer si les données fournissent
+suffisamment de preuves pour rejeter ou ne pas rejeter l'hypothèse
+nulle.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{35}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Bilateral hypothesis test on variance}
+\PY{c+c1}{\PYZsh{} H0: σ² = 50² = 2500 (population variance equals hypothesized value)}
+\PY{c+c1}{\PYZsh{} H1: σ² ≠ 2500 (population variance is different)}
+
+\PY{n}{sigma\PYZus{}0} \PY{o}{=} \PY{l+m+mi}{50}  \PY{c+c1}{\PYZsh{} hypothesized population standard deviation}
+\PY{n}{sigma\PYZus{}0\PYZus{}squared} \PY{o}{=} \PY{n}{sigma\PYZus{}0}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}  \PY{c+c1}{\PYZsh{} hypothesized population variance}
+\PY{n}{alpha\PYZus{}vii} \PY{o}{=} \PY{l+m+mf}{0.05}  \PY{c+c1}{\PYZsh{} significance level}
+
+\PY{c+c1}{\PYZsh{} Sample statistics}
+\PY{n}{n\PYZus{}vii} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{dataset}\PY{p}{)}
+\PY{n}{s\PYZus{}squared\PYZus{}vii} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}  \PY{c+c1}{\PYZsh{} sample variance (unbiased)}
+\PY{n}{s\PYZus{}vii} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}  \PY{c+c1}{\PYZsh{} sample standard deviation}
+
+\PY{c+c1}{\PYZsh{} Test statistic: Chi\PYZhy{}square}
+\PY{c+c1}{\PYZsh{} χ² = (n\PYZhy{}1) * s² / σ₀²}
+\PY{n}{chi2\PYZus{}stat\PYZus{}vii} \PY{o}{=} \PY{p}{(}\PY{n}{n\PYZus{}vii} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{s\PYZus{}squared\PYZus{}vii} \PY{o}{/} \PY{n}{sigma\PYZus{}0\PYZus{}squared}
+
+\PY{c+c1}{\PYZsh{} Degrees of freedom}
+\PY{n}{df\PYZus{}vii} \PY{o}{=} \PY{n}{n\PYZus{}vii} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} Critical values for two\PYZhy{}tailed test}
+\PY{n}{chi2\PYZus{}lower} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{chi2}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{n}{alpha\PYZus{}vii} \PY{o}{/} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{df\PYZus{}vii}\PY{p}{)}
+\PY{n}{chi2\PYZus{}upper} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{chi2}\PY{o}{.}\PY{n}{ppf}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{alpha\PYZus{}vii} \PY{o}{/} \PY{l+m+mi}{2}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{df\PYZus{}vii}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} P\PYZhy{}value for two\PYZhy{}tailed test}
+\PY{c+c1}{\PYZsh{} P\PYZhy{}value = 2 * min(P(χ² \PYZlt{} χ²\PYZus{}stat), P(χ² \PYZgt{} χ²\PYZus{}stat))}
+\PY{n}{p\PYZus{}lower} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{chi2}\PY{o}{.}\PY{n}{cdf}\PY{p}{(}\PY{n}{chi2\PYZus{}stat\PYZus{}vii}\PY{p}{,} \PY{n}{df}\PY{o}{=}\PY{n}{df\PYZus{}vii}\PY{p}{)}
+\PY{n}{p\PYZus{}upper} \PY{o}{=} \PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{p\PYZus{}lower}
+\PY{n}{p\PYZus{}value\PYZus{}vii} \PY{o}{=} \PY{l+m+mi}{2} \PY{o}{*} \PY{n+nb}{min}\PY{p}{(}\PY{n}{p\PYZus{}lower}\PY{p}{,} \PY{n}{p\PYZus{}upper}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Decision}
+\PY{n}{reject\PYZus{}h0\PYZus{}vii} \PY{o}{=} \PY{n}{chi2\PYZus{}stat\PYZus{}vii} \PY{o}{\PYZlt{}} \PY{n}{chi2\PYZus{}lower} \PY{o+ow}{or} \PY{n}{chi2\PYZus{}stat\PYZus{}vii} \PY{o}{\PYZgt{}} \PY{n}{chi2\PYZus{}upper}
+
+\PY{n}{variance\PYZus{}test\PYZus{}df} \PY{o}{=} \PY{n}{pl}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}
+    \PY{p}{\PYZob{}}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Paramètre}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hypothèse nulle H₀}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hypothèse alternative H₁}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Écart\PYZhy{}type hypothétisé σ₀}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Variance hypothétisée σ₀²}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Taille de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Écart\PYZhy{}type de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon s}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Variance de l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{échantillon s²}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Degrés de liberté (n\PYZhy{}1)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Statistique χ²}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur critique inférieure χ²\PYZus{}α/2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur critique supérieure χ²\PYZus{}1\PYZhy{}α/2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur p}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Niveau de signification α}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+        \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Valeur}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{p}{[}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{σ² = 2500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{σ² ≠ 2500}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0\PYZus{}squared}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{n\PYZus{}vii}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{s\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{s\PYZus{}squared\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{df\PYZus{}vii}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}stat\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{p\PYZus{}value\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+            \PY{l+s+sa}{f}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZob{}}\PY{n}{alpha\PYZus{}vii}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}
+        \PY{p}{]}\PY{p}{,}
+    \PY{p}{\PYZcb{}}
+\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{36}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Test bilatéral sur la variance (test du Chi\PYZhy{}deux)}
+
+\PY{l+s+s2}{**Formulation des hypothèses:**}
+\PY{l+s+s2}{\PYZhy{} H₀: σ² = }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0\PYZus{}squared}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ (σ = }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)}
+\PY{l+s+s2}{\PYZhy{} H₁: σ² ≠ }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0\PYZus{}squared}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Méthode:** Test du Chi\PYZhy{}deux pour la variance}
+
+\PY{l+s+s2}{La statistique de test est:}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{chi\PYZca{}2 = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{(n\PYZhy{}1) }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{cdot s\PYZca{}2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma\PYZus{}0\PYZca{}2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+si}{\PYZob{}}\PY{n}{df\PYZus{}vii}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{cdot }\PY{l+s+si}{\PYZob{}}\PY{n}{s\PYZus{}squared\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}0\PYZus{}squared}\PY{l+s+si}{\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ = }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}stat\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{**Résultats:**}
+
+\PY{l+s+si}{\PYZob{}}\PY{n}{mo}\PY{o}{.}\PY{n}{ui}\PY{o}{.}\PY{n}{table}\PY{p}{(}\PY{n}{variance\PYZus{}test\PYZus{}df}\PY{p}{,}\PY{+w}{ }\PY{n}{selection}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{**Règle de décision:**}
+
+\PY{l+s+s2}{On rejette H₀ si χ² \PYZlt{} χ²\PYZus{}α/2 = }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ ou χ² \PYZgt{} χ²\PYZus{}1\PYZhy{}α/2 = }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}
+
+\PY{l+s+s2}{Puisque χ² = }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}stat\PYZus{}vii}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{est dans la région de rejet}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0\PYZus{}vii}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{n}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{est pas dans la région de rejet}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ [}\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}lower}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{n}{chi2\PYZus{}upper}\PY{l+s+si}{:}\PY{l+s+s2}{.4f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{], on }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**rejette**}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0\PYZus{}vii}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{**ne rejette pas**}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ H₀.}
+
+\PY{l+s+s2}{**Conclusion:**}
+
+\PY{l+s+s2}{Au niveau de signification α = }\PY{l+s+si}{\PYZob{}}\PY{n}{alpha\PYZus{}vii}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{, }\PY{l+s+si}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{les données fournissent suffisamment de preuves pour rejeter l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse que l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{écart\PYZhy{}type de la population est de 50 minutes. La variance de la population est significativement différente de 2500.}\PY{l+s+s2}{\PYZdq{}}\PY{+w}{ }\PY{k}{if}\PY{+w}{ }\PY{n}{reject\PYZus{}h0\PYZus{}vii}\PY{+w}{ }\PY{k}{else}\PY{+w}{ }\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{les données ne fournissent pas suffisamment de preuves pour rejeter l}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{hypothèse nulle. On ne peut pas conclure que la variance de la population est différente de 2500.}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+si}{\PYZcb{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{36}{}
+    
+    \subsection{Test bilatéral sur la variance (test du
+Chi-deux)}\label{test-bilatuxe9ral-sur-la-variance-test-du-chi-deux}
+
+\textbf{Formulation des hypothèses:} - H₀: σ² = 2500 (σ = 50) - H₁: σ² ≠
+2500
+
+\textbf{Méthode:} Test du Chi-deux pour la variance
+
+La statistique de test est: \[
+\chi^2 = \frac{(n-1) \cdot s^2}{\sigma_0^2} = \frac{99 \cdot 2537.84}{2500} = 100.4985
+\]
+
+\textbf{Résultats:}
+
+\textbf{Règle de décision:}
+
+On rejette H₀ si χ² \textless{} χ²\_α/2 = 73.3611 ou χ² \textgreater{}
+χ²\_1-α/2 = 128.4220
+
+Puisque χ² = 100.4985 n'est pas dans la région de rejet {[}73.3611,
+128.4220{]}, on \textbf{ne rejette pas} H₀.
+
+\textbf{Conclusion:}
+
+Au niveau de signification α = 0.05, les données ne fournissent pas
+suffisamment de preuves pour rejeter l'hypothèse nulle. On ne peut pas
+conclure que la variance de la population est différente de 2500.
+
+    
+
+    \section{Extra) Variable aléatoire Q du temps de
+jeu}\label{extra-variable-aluxe9atoire-q-du-temps-de-jeu}
+
+Cette section définit la variable aléatoire Q représentant le temps de
+jeu hebdomadaire d'un joueur, qui sera utilisée dans le mandat 3 pour
+les simulations Monte-Carlo.
+
+On définit ici la variable aléatoire Q représentant le temps de jeu d'un
+joueur.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{37}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mu\PYZus{}q} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{sigma\PYZus{}q} \PY{o}{=} \PY{n}{dataset}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{n}{ddof}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{38}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mo}\PY{o}{.}\PY{n}{md}\PY{p}{(}\PY{l+s+sa}{rf}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}
+\PY{l+s+s2}{\PYZsh{}\PYZsh{} Définition de la variable aléatoire Q}
+
+\PY{l+s+s2}{Soit **Q** la variable aléatoire représentant le temps de jeu hebdomadaire d}\PY{l+s+s2}{\PYZsq{}}\PY{l+s+s2}{un joueur (en minutes).}
+
+\PY{l+s+s2}{En supposant que les temps de jeu suivent une distribution normale, on a :}
+
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}Q }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sim }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mathcal}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{N}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{(}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu, }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma\PYZca{}2)\PYZdl{}\PYZdl{}}
+
+\PY{l+s+s2}{Où :}
+
+\PY{l+s+s2}{| Paramètre | Description | Valeur (min.) |}
+\PY{l+s+s2}{|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}\PYZhy{}|}
+\PY{l+s+s2}{| \PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu\PYZdl{} | Moyenne | }\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}q}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+\PY{l+s+s2}{| \PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma\PYZdl{} | Écart\PYZhy{}type | }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}q}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+\PY{l+s+s2}{| \PYZdl{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma\PYZca{}2\PYZdl{} | Variance | }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}q}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{ |}
+
+\PY{l+s+s2}{Thus, the probability density function of Q is:}
+
+\PY{l+s+s2}{\PYZdl{}\PYZdl{}f\PYZus{}Q(q) = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{1}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sqrt}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{2}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pi}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{exp}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{left(\PYZhy{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{(q\PYZhy{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{mu)\PYZca{}2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{2}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sigma\PYZca{}2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{right) = }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{1}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}q}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{sqrt}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{2}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{pi}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{exp}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{left(\PYZhy{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{frac}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{(q\PYZhy{}}\PY{l+s+si}{\PYZob{}}\PY{n}{mu\PYZus{}q}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{)\PYZca{}2}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+se}{\PYZob{}\PYZob{}}\PY{l+s+s2}{2 }\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{times }\PY{l+s+si}{\PYZob{}}\PY{n}{sigma\PYZus{}q}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{l+s+si}{:}\PY{l+s+s2}{.2f}\PY{l+s+se}{\PYZcb{}\PYZcb{}}\PY{l+s+si}{\PYZcb{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{right)\PYZdl{}\PYZdl{}}
+\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+ 
+            
+\prompt{Out}{outcolor}{38}{}
+    
+    \subsection{Définition de la variable aléatoire
+Q}\label{duxe9finition-de-la-variable-aluxe9atoire-q}
+
+Soit \textbf{Q} la variable aléatoire représentant le temps de jeu
+hebdomadaire d'un joueur (en minutes).
+
+En supposant que les temps de jeu suivent une distribution normale, on a
+:
+
+\[Q \sim \mathcal{N}(\mu, \sigma^2)\]
+
+Où :
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Paramètre & Description & Valeur (min.) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mu\) & Moyenne & 280.58 \\
+\(\sigma\) & Écart-type & 50.38 \\
+\(\sigma^2\) & Variance & 2537.84 \\
+\end{longtable}
+
+Thus, the probability density function of Q is:
+
+\[f_Q(q) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(q-\mu)^2}{2\sigma^2}\right) = \frac{1}{50.38\sqrt{2\pi}} \exp\left(-\frac{(q-280.58)^2}{2 \times 2537.84}\right)\]
+
+    
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}

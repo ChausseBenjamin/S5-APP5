@@ -1,54 +1,13 @@
-\documentclass[a4paper]{article}
-\usepackage{tabularx}
-\usepackage{titlepage}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{document}
-\usepackage{booktabs}
-\usepackage{float}
-\usepackage{graphicx}
-\usepackage{utils}
-\usepackage{multicol}
-\usepackage{subcaption}
-\usepackage[dvipsnames]{xcolor}
-\usepackage{enumitem}
-\usepackage[toc,page]{appendix}
+\documentclass[11pt]{article}
+%xelatex
 
-\title{Rapport d'APP}
-
-\class{Probabilités, Statistiques et Simulations Monte Carlo}
-\classnb{GIF591}
-
-\teacher{Abdelaziz Ramzi}
-
-\author{
-  \addtolength{\tabcolsep}{-0.4em}
-  \begin{tabular}{rcl}
-      Benjamin Chausse & -- & CHAB1704 \\
-      Shawn Couture & -- & COUS1912 \\
-  \end{tabular}
-}
+\usepackage{notebook-utils}
 
 \begin{document}
-\maketitle
-\contents{
-\tableofcontents
-\listoffigures
-\listoftables
-}
 
-% Mandat 1
-\section{Probabilités}
-\input{01-probabilites.tex}
-
-% Mandat 2
-\section{Statistiques descriptives et inférence statistique}
-\input{02-stats-descriptive.tex}
-
-% Mandat 3
-\section{Simulations Monte-Carlo}
-\input{03-monte-carlo.tex}
-
-\input{99-annexes.tex}
+\input{00-intro.tex}
+\input{01-mandat.tex}
+\input{02-mandat.tex}
+\input{03-mandat.tex}
 
 \end{document}
